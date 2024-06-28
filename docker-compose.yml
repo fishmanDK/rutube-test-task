@@ -24,14 +24,14 @@ services:
       - POSTGRES_PASSWORD=qwerty
       - POSTGRES_DB=postgres
     ports:
-      - 5436:5432
+      - 5432:5432
 
   migrate:
     image: migrate/migrate
     volumes:
       - .:/schema
     command:
-      [ "-path", "./schema", "-database", "postgres://postgres:qwerty@localhost:5436/postgres?sslmode=disable", "up" ]
+      [ "-path", "./schema", "-database", "'postgres://postgres:qwerty@localhost:5432/postgres?sslmode=disable'", "up" ]
     depends_on:
       - db
 

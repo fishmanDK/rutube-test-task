@@ -18,7 +18,7 @@ func (h *Handlers) authMiddleware(c *gin.Context) {
 
 	header := c.GetHeader("Authorization")
 	if header == "" {
-		h.logger.Error("Error get header (Authorization): ", op)
+		h.logger.Error("Error get header (Authorization): ", header, op)
 		newErrorResponse(c, http.StatusUnauthorized, userUnauthorized)
 		return
 	}
