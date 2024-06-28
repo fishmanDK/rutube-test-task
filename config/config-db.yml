@@ -1,0 +1,6 @@
+pg_user: "postgres"
+pg_database: "postgres"
+pg_host: "db"
+pg_port: "5432"
+pg_sslmode: "disable"
+pg_password: "qwerty"

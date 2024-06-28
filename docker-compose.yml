@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=qwerty
+      - CONFIG_PATH_HTTP=./config/config.yml
+      - CONFIG_PATH_DB=./config/config-db.yml
+
+  db:
+    restart: always
+    image: postgres:latest
+    volumes:
+      - ./.database/postgres/data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+      - ./entrypoint.sh:/docker-entrypoint-initdb.d/entrypoint.sh
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qwerty
+      - POSTGRES_DB=postgres
+    ports:
+      - 5436:5432
+
+  migrate:
+    image: migrate/migrate
+    volumes:
+      - .:/schema
+    command:
+      [ "-path", "./schema", "-database", "postgres://postgres:qwerty@localhost:5436/postgres?sslmode=disable", "up" ]
+    depends_on:
+      - db
+
+volumes:
+  db_data:
